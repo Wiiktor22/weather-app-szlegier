@@ -32,9 +32,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         marginTop: 10,
-        height: 325,
-        borderWidth: 2,
-        borderColor: 'red'
+        height: 320,
     },
     regularText: {
         fontSize: 16,
