@@ -1,32 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigation from './src/nav/RootNavigation';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useFonts, Montserrat_300Light, Montserrat_400Regular, Montserrat_600SemiBold } from '@expo-google-fonts/montserrat';
 
-export default function App() {
+const App = () => {
+  const [fontsLoaded] = useFonts({
+    Montserrat_300Light,
+    Montserrat_400Regular,
+    Montserrat_600SemiBold
+  })
+
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        start={{ x: 0.15, y: 0.2 }}
-        colors={['rgba(130,176,250, 1)', 'rgba(66, 135, 245, 1)']}
-        style={styles.background}
-      >
-        <Text>
-          Weather App
-        </Text>
-      </LinearGradient>
-    </View>
-  );
-}
+    <>
+      {
+        fontsLoaded ? (
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <RootNavigation />
+            </NavigationContainer>
+          </SafeAreaProvider>
+        ) : null
+      }
+    </>
+  )
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-  },
-  background: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
