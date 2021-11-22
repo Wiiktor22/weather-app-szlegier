@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import TodayWeatherPanel from '../components/RootView/TodayWeatherPanel';
 import ClosestHoursPanel from '../components/RootView/ClosestHoursPanel';
 import ClosestDaysPanel from '../components/RootView/ClosestDaysPanel';
+import WeatherDetailsPanel from '../components/RootView/WeatherDetailsPanel';
 
 const RootView: FC = () => {
     return (
@@ -15,6 +16,7 @@ const RootView: FC = () => {
                 <TodayWeatherPanel />
                 <ClosestHoursPanel />
                 <ClosestDaysPanel />
+                <WeatherDetailsPanel />
             </ScrollView>
         </View>
     )
