@@ -24,8 +24,17 @@ const useUtils = () => {
         }
     }
 
+    const getPhotoName = (iconCode: String): String => {
+        if (iconCode.startsWith("03") || iconCode.startsWith("04")) return "03d"
+        if (iconCode.startsWith("09")) return "09d";
+        if (iconCode.startsWith("13")) return "13d";
+        if (iconCode.startsWith("50")) return "50d";
+        return iconCode;
+    }
+
     return {
-        getNameOfTheDay
+        getNameOfTheDay,
+        getPhotoName
     }
 };
 
