@@ -36,7 +36,7 @@ const WeatherDetailsPanel: FC<Props> = ({ }) => {
                     <View style={styles.rowOfData}>
                         {
                             firstRowOfData.map(({ title, data }) => (
-                                <View style={styles.singleInfoContainer}>
+                                <View style={styles.singleInfoContainer} key={title}>
                                     <Text style={styles.titleText}>{title}</Text>
                                     <Text style={styles.valueText}>{data}</Text>
                                 </View>
@@ -46,7 +46,7 @@ const WeatherDetailsPanel: FC<Props> = ({ }) => {
                     <View style={styles.rowOfData}>
                         {
                             secondRowOfData.map(({ title, data }) => (
-                                <View style={styles.singleInfoContainer}>
+                                <View style={styles.singleInfoContainer} key={title}>
                                     <Text style={styles.titleText}>{title}</Text>
                                     <Text style={styles.valueText}>{data}</Text>
                                 </View>
