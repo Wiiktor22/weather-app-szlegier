@@ -20,7 +20,7 @@ const RootNavigation = () => (
         initialRouteName={ScreensNames.Root}
         screenOptions={options}
     >
-        {/* <Stack.Screen name={ScreensNames.Root} component={RootView} /> */}
+        <Stack.Screen name={ScreensNames.Root} component={RootView} />
         <Stack.Screen name={ScreensNames.CitiesList} component={CitiesListView} />
     </Stack.Navigator>
 )

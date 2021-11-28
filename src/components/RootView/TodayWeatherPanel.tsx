@@ -1,14 +1,27 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/core';
+import { ScreensNames } from '../../nav/RootNavigation';
 
 interface Props {
 
 }
 
 const TodayWeatherPanel: FC<Props> = ({}) => {
+    const navigation = useNavigation();
+
     return (
         <View style={styles.container}>
-            <Text style={styles.regularText}>Pogoda</Text>
+            <View style={styles.header}>
+                <Text style={styles.regularText}>Pogoda</Text>
+                <TouchableOpacity 
+                    style={styles.menuButton}
+                    onPress={() => navigation.navigate({ name: ScreensNames.CitiesList })}
+                >
+                    <Ionicons name="menu-outline" size={30} color="white" />
+                </TouchableOpacity>
+            </View>
             <Text style={styles.cityText}>Miasto, PA</Text>
             <Text style={styles.regularText}>Krótki opis</Text>
             <Text style={styles.tempeatureText}>0°C</Text>
@@ -33,6 +46,17 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 10,
         height: 320,
+    },
+    header: {
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 30,
+        width: '100%',
+    },
+    menuButton: {
+        position: 'absolute',
+        right: 10
     },
     regularText: {
         fontSize: 16,
