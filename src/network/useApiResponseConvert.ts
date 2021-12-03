@@ -1,8 +1,9 @@
 import React from "react";
-import { CurrentWeatherDetails } from "./stores/WeatherStore.types";
+import { CurrentWeatherDetails, HourlyWeatherObject } from "./stores/WeatherStore.types";
 
 interface ApiResponseConvertObject {
     convertSimpleWeatherObject: (responseData: any) => CurrentWeatherDetails;
+    convertHourlyWeatherObject: (responseData: any) => HourlyWeatherObject[];
 }
 
 const useApiResponseConvert = (): ApiResponseConvertObject => {
@@ -33,8 +34,27 @@ const useApiResponseConvert = (): ApiResponseConvertObject => {
         return convertedObject;
     }
 
+    const convertHourlyWeatherObject = (responseData: any): HourlyWeatherObject[] => {
+        let hourly: any = [];
+
+        for (let i = 0; i < 7; i++) {
+            const weather = responseData.hourly[i];
+            console.log('----')
+            console.log(weather);
+            const newItem = {
+                temp: weather.temp,
+                iconID: weather.weather[0].icon
+            }
+            
+            hourly = [...hourly, newItem];
+        }
+
+        return hourly;
+    }
+
     return {
-        convertSimpleWeatherObject
+        convertSimpleWeatherObject,
+        convertHourlyWeatherObject
     }
 };
 

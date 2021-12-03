@@ -23,7 +23,7 @@ const RootView: FC = () => {
                 showsVerticalScrollIndicator={false}
             >
                 <TodayWeatherPanel weather={savedLocation?.[0]?.current} />
-                <ClosestHoursPanel />
+                <ClosestHoursPanel weather={savedLocation?.[0]?.hourly} />
                 <ClosestDaysPanel />
                 <WeatherDetailsPanel weather={savedLocation?.[0]?.current} />
             </ScrollView>

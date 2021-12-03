@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useMemo } from 'react';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { HourlyWeatherObject } from '../../network/stores/WeatherStore.types';
 
 const items = [
     {
@@ -33,10 +34,31 @@ const items = [
 ]
 
 interface Props {
-
+    weather: HourlyWeatherObject[];
 }
 
-const ClosestHoursPanel: FC<Props> = ({}) => {
+const ClosestHoursPanel: FC<Props> = ({ weather }) => {
+
+    const getHour = (index: number) => {
+        const now = new Date().getHours();
+        const potentialNextHour = now + index;
+        return potentialNextHour > 23 ? potentialNextHour - 24 : potentialNextHour
+    }
+
+    const data = useMemo(() => {
+        let items: any = [];
+
+        for (let i = 0; i < 7; i++) {
+            const newItem = {
+                hour: i === 0 ? 'Teraz' : `${getHour(i)}`,
+                temp: `${Math.round(weather?.[i]?.temp)}°C`
+            }
+            items = [...items, newItem];
+        }
+
+        return items;
+    }, [weather]);
+
     return (
         <View style={styles.container}>
             <View style={styles.contentContainer}>
@@ -47,10 +69,10 @@ const ClosestHoursPanel: FC<Props> = ({}) => {
                     horizontal={true}
                 >
                     {
-                        items.map(item => (
+                        data.map(item => (
                             <View style={styles.closestHour} key={item.hour}>
                                 <Text style={styles.hourText}>{item.hour}</Text>
-                                <Text>image</Text>
+                                <Image source={require('../../../public/icons/03d.png')} style={styles.image} />
                                 <Text style={styles.tempText}>{item.temp}</Text>
                             </View>
                         ))
@@ -104,6 +126,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Montserrat_600SemiBold',
         color: 'white'
+    },
+    image: {
+        height: 25,
+        width: 25
     }
 });
 

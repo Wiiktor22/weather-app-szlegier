@@ -20,6 +20,12 @@ export interface CurrentWeatherDetails {
     name: string;
 }
 
+export interface HourlyWeatherObject {
+    temp: number;
+    iconID: string;
+}
+
 export interface WeatherObject {
     current: CurrentWeatherDetails;
+    hourly: HourlyWeatherObject[];
 }
