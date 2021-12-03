@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import useUtils from '../../hooks/useUtils';
+import { HourlyWeatherObject } from '../../network/stores/WeatherStore.types';
 
 const items = [
     'image1',
@@ -13,10 +14,10 @@ const items = [
 ]
 
 interface Props {
-
+    weather: HourlyWeatherObject[];
 }
 
-const ClosestDaysPanel: FC<Props> = ({}) => {
+const ClosestDaysPanel: FC<Props> = ({ weather }) => {
     const { getNameOfTheDay } = useUtils();
 
     const today = useMemo(() => new Date().getDay(), [])
@@ -31,8 +32,8 @@ const ClosestDaysPanel: FC<Props> = ({}) => {
                         <View style={styles.closestDayItem} key={item}>
                             <Text style={styles.dayText}>{index === 0 ? 'Dziś' : getNameOfTheDay(today + index)}</Text>
                             <View style={styles.detailsContainer}>
-                                <Text>image</Text>
-                                <Text style={styles.temperatureText}>8°C</Text>
+                                <Image source={require('../../../public/icons/03d.png')} style={styles.image} />
+                                <Text style={styles.temperatureText}>{Math.round(weather?.[index]?.temp)}°C</Text>
                             </View>
                         </View>
                     ))
@@ -93,6 +94,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: '100%',
         width: 100
+    },
+    image: {
+        height: 25,
+        width: 25
     }
 })
 

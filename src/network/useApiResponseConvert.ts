@@ -4,6 +4,7 @@ import { CurrentWeatherDetails, HourlyWeatherObject } from "./stores/WeatherStor
 interface ApiResponseConvertObject {
     convertSimpleWeatherObject: (responseData: any) => CurrentWeatherDetails;
     convertHourlyWeatherObject: (responseData: any) => HourlyWeatherObject[];
+    convertDailyWeatherObject: (responseData: any) => HourlyWeatherObject[];
 }
 
 const useApiResponseConvert = (): ApiResponseConvertObject => {
@@ -39,8 +40,6 @@ const useApiResponseConvert = (): ApiResponseConvertObject => {
 
         for (let i = 0; i < 7; i++) {
             const weather = responseData.hourly[i];
-            console.log('----')
-            console.log(weather);
             const newItem = {
                 temp: weather.temp,
                 iconID: weather.weather[0].icon
@@ -52,9 +51,26 @@ const useApiResponseConvert = (): ApiResponseConvertObject => {
         return hourly;
     }
 
+    const convertDailyWeatherObject = (responseData: any): HourlyWeatherObject[] => {
+        let daily: any = [];
+
+        for (let i = 0; i < 7; i++) {
+            const weather = responseData.daily[i];
+            const newItem = {
+                temp: weather.temp.day,
+                iconID: weather.weather[0].icon
+            }
+            
+            daily = [...daily, newItem];
+        }
+
+        return daily;
+    }
+
     return {
         convertSimpleWeatherObject,
-        convertHourlyWeatherObject
+        convertHourlyWeatherObject,
+        convertDailyWeatherObject
     }
 };
 

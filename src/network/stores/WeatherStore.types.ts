@@ -28,4 +28,5 @@ export interface HourlyWeatherObject {
 export interface WeatherObject {
     current: CurrentWeatherDetails;
     hourly: HourlyWeatherObject[];
+    daily: HourlyWeatherObject[];
 }

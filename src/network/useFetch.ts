@@ -11,7 +11,7 @@ interface FetchHookObject {
 
 const useFetch = (): FetchHookObject => {
     const { getWeatherByCoordsLink, getDetailsWeatherByCoordsLink } = linksGetters;
-    const { convertSimpleWeatherObject, convertHourlyWeatherObject } = useApiResponseConvert();
+    const { convertSimpleWeatherObject, convertHourlyWeatherObject, convertDailyWeatherObject } = useApiResponseConvert();
     const [savedLocation, setSavedLocation] = useWeatherStore('savedLocation');
 
     const fetchWeatherByCoords = async (lat: number, lon: number) => {
@@ -23,8 +23,7 @@ const useFetch = (): FetchHookObject => {
 
         const newWeather = convertSimpleWeatherObject(data);
         const hourlyWeather = convertHourlyWeatherObject(detailsData);
-
-        console.log(hourlyWeather);
+        const dailyWeather = convertDailyWeatherObject(detailsData);
         
         const copy = [...savedLocation];
         const indexOfItem = copy.findIndex(w => {
@@ -35,7 +34,8 @@ const useFetch = (): FetchHookObject => {
 
         const newItem: WeatherObject = {
             current: newWeather,
-            hourly: hourlyWeather
+            hourly: hourlyWeather,
+            daily: dailyWeather
         }
 
         if (indexOfItem === -1) {

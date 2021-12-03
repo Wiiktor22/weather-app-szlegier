@@ -2,37 +2,6 @@ import React, { FC, useMemo } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { HourlyWeatherObject } from '../../network/stores/WeatherStore.types';
 
-const items = [
-    {
-        hour: 'Teraz',
-        temp: '8°C'
-    },
-    {
-        hour: 12,
-        temp: '8°C'
-    },
-    {
-        hour: 13,
-        temp: '8°C'
-    },
-    {
-        hour: 14,
-        temp: '8°C'
-    },
-    {
-        hour: 15,
-        temp: '8°C'
-    },
-    {
-        hour: 16,
-        temp: '8°C'
-    },
-    {
-        hour: 17,
-        temp: '8°C'
-    }
-]
-
 interface Props {
     weather: HourlyWeatherObject[];
 }

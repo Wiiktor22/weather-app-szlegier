@@ -24,7 +24,7 @@ const RootView: FC = () => {
             >
                 <TodayWeatherPanel weather={savedLocation?.[0]?.current} />
                 <ClosestHoursPanel weather={savedLocation?.[0]?.hourly} />
-                <ClosestDaysPanel />
+                <ClosestDaysPanel weather={savedLocation?.[0]?.daily} />
                 <WeatherDetailsPanel weather={savedLocation?.[0]?.current} />
             </ScrollView>
         </View>
