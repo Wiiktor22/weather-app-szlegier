@@ -1,15 +1,18 @@
-import React, { FC } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { FC, useMemo } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import { ScreensNames } from '../../nav/RootNavigation';
+import { CurrentWeatherDetails } from '../../network/stores/WeatherStore.types';
+import useUtils from '../../hooks/useUtils';
 
 interface Props {
-
+    weather: CurrentWeatherDetails;
 }
 
-const TodayWeatherPanel: FC<Props> = ({}) => {
+const TodayWeatherPanel: FC<Props> = ({ weather }) => {
     const navigation = useNavigation();
+    const { getPhotoName } = useUtils();
 
     return (
         <View style={styles.container}>
@@ -22,18 +25,22 @@ const TodayWeatherPanel: FC<Props> = ({}) => {
                     <Ionicons name="menu-outline" size={30} color="white" />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.cityText}>Miasto, PA</Text>
-            <Text style={styles.regularText}>Krótki opis</Text>
-            <Text style={styles.tempeatureText}>0°C</Text>
+            <Text style={styles.cityText}>{weather?.name}, PA</Text>
+            <Text style={styles.regularText}>{weather?.description}</Text>
+            <Text style={styles.tempeatureText}>{Math.round(weather?.temp)}°C</Text>
             <View style={styles.minMaxContainer}>
                 <Text style={{ ...styles.regularText, marginRight: 15}}>
-                    Min: <Text style={styles.minMaxValueText}>0°C</Text>
+                    Min: <Text style={styles.minMaxValueText}>{Math.round(weather?.minTemp)}°C</Text>
                 </Text>
                 <Text style={styles.regularText}>
-                    Max: <Text style={styles.minMaxValueText}>0°C</Text>
+                    Max: <Text style={styles.minMaxValueText}>{Math.round(weather?.maxTemp)}°C</Text>
                 </Text>
             </View>
-            <Text>Image</Text>
+            {
+                typeof weather?.iconID === 'string' ? (
+                    <Image source={require('../../../public/icons/03d.png')} />
+                ) : null
+            }
             <Text style={styles.lastUpdateText}>Ostatnia aktualizacja: 00:00</Text>
         </View>
     )

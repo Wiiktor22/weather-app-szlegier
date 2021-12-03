@@ -13,12 +13,7 @@ const RootView: FC = () => {
 
     useEffect(() => {
         fetchWeatherByCoords(51.50, -0.13);
-    }, [])
-
-    useEffect(() => {
-        console.log('----')
-        console.log(savedLocation);
-    }, [savedLocation])
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -27,10 +22,10 @@ const RootView: FC = () => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <TodayWeatherPanel />
+                <TodayWeatherPanel weather={savedLocation?.[0]?.current} />
                 <ClosestHoursPanel />
                 <ClosestDaysPanel />
-                <WeatherDetailsPanel />
+                <WeatherDetailsPanel weather={savedLocation?.[0]?.current} />
             </ScrollView>
         </View>
     )

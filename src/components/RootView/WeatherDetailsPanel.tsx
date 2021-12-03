@@ -1,31 +1,36 @@
 import React, { FC, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { CurrentWeatherDetails } from '../../network/stores/WeatherStore.types';
 
 interface Props {
-
+    weather: CurrentWeatherDetails;
 }
 
-const WeatherDetailsPanel: FC<Props> = ({ }) => {
+const WeatherDetailsPanel: FC<Props> = ({ weather }) => {
 
     const firstRowOfData = useMemo(() => {
         const titles = ['odczuwalna', 'ciśnienie', 'wilgotność'];
-        const fakeData = ['5 °C', '1002 hPa', '70%'];
+        const fakeData = [
+            `${Math.round(weather?.feelsLikeTemp)}°C`, 
+            `${weather?.pressure} hPa`, 
+            `${weather?.humidity}%`
+        ];
 
         return titles.map((title, index) => ({
             title,
             data: fakeData[index]
         }))
-    }, []);
+    }, [weather]);
 
     const secondRowOfData = useMemo(() => {
         const titles = ['wiatr', 'kierunek', 'zachód/wschód'];
-        const fakeData = ['4 km/h', 'SE', '17:00'];
+        const fakeData = [`${weather?.windSpeed} km/h`, 'SE', '17:00'];
 
         return titles.map((title, index) => ({
             title,
             data: fakeData[index]
         }))
-    }, []);
+    }, [weather]);
 
     return (
         <View style={styles.container}>
