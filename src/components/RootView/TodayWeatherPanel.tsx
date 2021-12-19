@@ -14,6 +14,11 @@ const TodayWeatherPanel: FC<Props> = ({ weather }) => {
     const navigation = useNavigation();
     const { getPhoto } = useUtils();
 
+    const getLastUpdate = () => {
+        const now = new Date()
+        return `${now.getHours()}:${now.getMinutes()}`;
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -41,7 +46,7 @@ const TodayWeatherPanel: FC<Props> = ({ weather }) => {
                     <Image source={getPhoto(weather?.iconID)} />
                 ) : null
             }
-            <Text style={styles.lastUpdateText}>Ostatnia aktualizacja: 00:00</Text>
+            <Text style={styles.lastUpdateText}>Ostatnia aktualizacja: {getLastUpdate()}</Text>
         </View>
     )
 };
