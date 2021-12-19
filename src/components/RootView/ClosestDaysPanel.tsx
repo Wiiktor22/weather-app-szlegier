@@ -3,22 +3,12 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import useUtils from '../../hooks/useUtils';
 import { HourlyWeatherObject } from '../../network/stores/WeatherStore.types';
 
-const items = [
-    'image1',
-    'image2',
-    'image3',
-    'image4',
-    'image5',
-    'image6',
-    'image7',
-]
-
 interface Props {
     weather: HourlyWeatherObject[];
 }
 
 const ClosestDaysPanel: FC<Props> = ({ weather }) => {
-    const { getNameOfTheDay } = useUtils();
+    const { getNameOfTheDay, getPhoto } = useUtils();
 
     const today = useMemo(() => new Date().getDay(), [])
 
@@ -28,11 +18,11 @@ const ClosestDaysPanel: FC<Props> = ({ weather }) => {
                 <Text style={styles.headerText}>Prognoza (7 dni)</Text>
                 <View style={styles.divider} />
                 {
-                    items.map((item, index) => (
-                        <View style={styles.closestDayItem} key={item}>
+                    weather.map((item, index) => (
+                        <View style={styles.closestDayItem} key={index}>
                             <Text style={styles.dayText}>{index === 0 ? 'Dziś' : getNameOfTheDay(today + index)}</Text>
                             <View style={styles.detailsContainer}>
-                                <Image source={require('../../../public/icons/03d.png')} style={styles.image} />
+                                <Image source={getPhoto(item?.iconID)} style={styles.image} />
                                 <Text style={styles.temperatureText}>{Math.round(weather?.[index]?.temp)}°C</Text>
                             </View>
                         </View>

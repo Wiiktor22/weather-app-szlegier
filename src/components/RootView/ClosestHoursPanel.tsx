@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import useUtils from '../../hooks/useUtils';
 import { HourlyWeatherObject } from '../../network/stores/WeatherStore.types';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const ClosestHoursPanel: FC<Props> = ({ weather }) => {
+    const { getPhoto } = useUtils();
 
     const getHour = (index: number) => {
         const now = new Date().getHours();
@@ -20,7 +22,8 @@ const ClosestHoursPanel: FC<Props> = ({ weather }) => {
         for (let i = 0; i < 7; i++) {
             const newItem = {
                 hour: i === 0 ? 'Teraz' : `${getHour(i)}`,
-                temp: `${Math.round(weather?.[i]?.temp)}°C`
+                temp: `${Math.round(weather?.[i]?.temp)}°C`,
+                iconID: weather[i].iconID
             }
             items = [...items, newItem];
         }
@@ -41,7 +44,7 @@ const ClosestHoursPanel: FC<Props> = ({ weather }) => {
                         data.map(item => (
                             <View style={styles.closestHour} key={item.hour}>
                                 <Text style={styles.hourText}>{item.hour}</Text>
-                                <Image source={require('../../../public/icons/03d.png')} style={styles.image} />
+                                <Image source={getPhoto(item?.iconID)} style={styles.image} />
                                 <Text style={styles.tempText}>{item.temp}</Text>
                             </View>
                         ))

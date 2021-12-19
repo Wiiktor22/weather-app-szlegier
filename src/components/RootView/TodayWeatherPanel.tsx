@@ -12,7 +12,7 @@ interface Props {
 
 const TodayWeatherPanel: FC<Props> = ({ weather }) => {
     const navigation = useNavigation();
-    const { getPhotoName } = useUtils();
+    const { getPhoto } = useUtils();
 
     return (
         <View style={styles.container}>
@@ -38,7 +38,7 @@ const TodayWeatherPanel: FC<Props> = ({ weather }) => {
             </View>
             {
                 typeof weather?.iconID === 'string' ? (
-                    <Image source={require('../../../public/icons/03d.png')} />
+                    <Image source={getPhoto(weather?.iconID)} />
                 ) : null
             }
             <Text style={styles.lastUpdateText}>Ostatnia aktualizacja: 00:00</Text>
