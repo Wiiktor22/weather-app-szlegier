@@ -1,19 +1,13 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import TodayWeatherPanel from '../components/RootView/TodayWeatherPanel';
 import ClosestHoursPanel from '../components/RootView/ClosestHoursPanel';
 import ClosestDaysPanel from '../components/RootView/ClosestDaysPanel';
 import WeatherDetailsPanel from '../components/RootView/WeatherDetailsPanel';
-import useFetch from '../network/useFetch';
 import useWeatherStore from '../network/stores/WeatherStore';
 
 const RootView: FC = () => {
     const [savedLocation] = useWeatherStore('savedLocation');
-    const { fetchWeatherByCoords } = useFetch();
-
-    useEffect(() => {
-        fetchWeatherByCoords(51.50, -0.13);
-    }, []);
 
     return (
         <View style={styles.container}>

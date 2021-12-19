@@ -25,7 +25,7 @@ const TodayWeatherPanel: FC<Props> = ({ weather }) => {
                     <Ionicons name="menu-outline" size={30} color="white" />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.cityText}>{weather?.name}, PA</Text>
+            <Text style={styles.cityText}>{weather?.name}</Text>
             <Text style={styles.regularText}>{weather?.description}</Text>
             <Text style={styles.tempeatureText}>{Math.round(weather?.temp)}°C</Text>
             <View style={styles.minMaxContainer}>
