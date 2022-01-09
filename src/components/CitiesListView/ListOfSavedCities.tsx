@@ -4,18 +4,14 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import { ScreensNames } from '../../nav/RootNavigation';
 import useWeatherStore from '../../network/stores/WeatherStore';
 
-interface Props {
-
-}
-
-const ListOfSavedCities: FC<Props> = ({ }) => {
+const ListOfSavedCities: FC = () => {
     const navigation = useNavigation();
     const [savedLocation] = useWeatherStore('savedLocation');
 
     const cities = useMemo(() => (
         savedLocation.map((location, index) => ({
             name: index === 0 ? 'Moja lokalizacja' : location.current.name,
-            temp: location.current.temp
+            temp: Math.round(location.current.temp)
         }))
     ), [savedLocation]);
 

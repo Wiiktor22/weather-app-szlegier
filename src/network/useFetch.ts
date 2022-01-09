@@ -57,8 +57,8 @@ const useFetch = (): FetchHookObject => {
 
         if (data.length === 0) {
             Alert.alert(
-                'Error',
-                `Can not find city: ${city}`
+                'Błąd!',
+                `Nie znaleziono miasta: ${city}`
             )
         } else {
             const newCity = {
