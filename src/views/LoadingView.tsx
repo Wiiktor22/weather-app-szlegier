@@ -46,10 +46,7 @@ const LoadingView: FC = () => {
                 ...(persistSavedLocations !== null ? persistSavedLocations : [])
             ];
             
-            for (const persistLocation of persistSavedLocations) {
-                const { latitude, longitude } = persistLocation;
-                await fetchWeatherByCoords(latitude, longitude);
-            }
+            await fetchWeatherByCoords(persistSavedLocations);
 
             navigation.navigate(ScreensNames.Root, { weather: savedLocation[0] });
         }

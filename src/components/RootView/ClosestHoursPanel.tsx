@@ -23,7 +23,7 @@ const ClosestHoursPanel: FC<Props> = ({ weather }) => {
             const newItem = {
                 hour: i === 0 ? 'Teraz' : `${getHour(i)}`,
                 temp: `${Math.round(weather?.[i]?.temp)}°C`,
-                iconID: weather[i].iconID
+                iconID: weather?.[i]?.iconID
             }
             items = [...items, newItem];
         }

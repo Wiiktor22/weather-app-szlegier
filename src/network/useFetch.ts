@@ -8,47 +8,55 @@ import { Alert } from "react-native";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 interface FetchHookObject {
-    fetchWeatherByCoords: (lat: number, lon: number) => Promise<void>;
+    fetchWeatherByCoords: (providedLocations: { latitude: number, longitude: number }[]) => Promise<void>;
     fetchCoordsByCityName: (city: string) => Promise<void>;
 }
 
 const useFetch = (): FetchHookObject => {
     const { getWeatherByCoordsLink, getDetailsWeatherByCoordsLink, getCoordsByCityName } = linksGetters;
     const { convertSimpleWeatherObject, convertHourlyWeatherObject, convertDailyWeatherObject } = useApiResponseConvert();
-    
+
     const [savedLocation, setSavedLocation] = useWeatherStore('savedLocation');
     const { getItem, setItem } = useAsyncStorage('persistSavedLocations');
 
-    const fetchWeatherByCoords = async (lat: number, lon: number) => {
-        const url = getWeatherByCoordsLink(lat, lon);
-        const { data } = await axios.get(url);
+    const fetchWeatherByCoords = async (providedLocations: { latitude: number, longitude: number }[]) => {
+        let weather = [];
 
-        const detailsUrl = getDetailsWeatherByCoordsLink(lat, lon);
-        const { data: detailsData } = await axios.get(detailsUrl);
+        for (const providedLocation of providedLocations) {
+            const { latitude: lat, longitude: lon } = providedLocation;
 
-        const newWeather = convertSimpleWeatherObject(data);
-        const hourlyWeather = convertHourlyWeatherObject(detailsData);
-        const dailyWeather = convertDailyWeatherObject(detailsData);
-        
-        const copy = [...savedLocation];
-        const indexOfItem = copy.findIndex(w => {
-            const { lon: newLon, lat: newLat } = newWeather.coord;
-            const { lon, lat } = w.current.coord;
-            return newLon === lon && lat === newLat;
-        })
+            const url = getWeatherByCoordsLink(lat, lon);
+            const { data } = await axios.get(url);
 
-        const newItem: WeatherObject = {
-            current: newWeather,
-            hourly: hourlyWeather,
-            daily: dailyWeather
+            const detailsUrl = getDetailsWeatherByCoordsLink(lat, lon);
+            const { data: detailsData } = await axios.get(detailsUrl);
+
+            const newWeather = convertSimpleWeatherObject(data);
+            const hourlyWeather = convertHourlyWeatherObject(detailsData);
+            const dailyWeather = convertDailyWeatherObject(detailsData);
+
+            const copy = [...weather];
+            const indexOfItem = copy.findIndex(w => {
+                const { lon: newLon, lat: newLat } = newWeather.coord;
+                const { lon, lat } = w.current.coord;
+                return newLon === lon && lat === newLat;
+            })
+
+            const newItem: WeatherObject = {
+                current: newWeather,
+                hourly: hourlyWeather,
+                daily: dailyWeather
+            }
+
+            if (indexOfItem === -1) {
+                weather = [...copy, newItem]
+            } else {
+                copy.splice(indexOfItem, 1, newItem);
+                weather = copy;
+            }
         }
 
-        if (indexOfItem === -1) {
-            setSavedLocation([...copy, newItem]);
-        } else {
-            copy.splice(indexOfItem, 1, newItem);
-            setSavedLocation(copy);
-        }
+        setSavedLocation(weather)
     }
 
     const fetchCoordsByCityName = async (city: string) => {

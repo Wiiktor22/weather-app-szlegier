@@ -1,3 +1,4 @@
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { FC, useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -6,18 +7,31 @@ import useWeatherStore from '../../network/stores/WeatherStore';
 
 const ListOfSavedCities: FC = () => {
     const navigation = useNavigation();
-    const [savedLocation] = useWeatherStore('savedLocation');
+    const [savedLocation, setSavedLocation] = useWeatherStore('savedLocation');
+    const { getItem, setItem } = useAsyncStorage('persistSavedLocations'); 
 
-    const cities = useMemo(() => (
-        savedLocation.map((location, index) => ({
-            name: index === 0 ? 'Moja lokalizacja' : location.current.name,
-            temp: Math.round(location.current.temp)
-        }))
-    ), [savedLocation]);
+    const cities = savedLocation.map((location, index) => ({
+        name: index === 0 ? 'Moja lokalizacja' : location.current.name,
+        temp: Math.round(location.current.temp)
+    }));
 
     const onSpecificLocationPress = (index: number) => {
         const location = savedLocation[index];
         navigation.navigate(ScreensNames.Root, { weather: location });
+    }
+
+    const onSpecificLocationLongPress = async (index: number) => {
+        const locationName = savedLocation[index].current.name;
+
+        // TODO: NAPRAWIĆ KASOWANIE
+        
+        const savedLocations = await getItem() as string;
+        const parsedLocation = JSON.parse(savedLocations);
+        const newPersistSavedLocation = parsedLocation.filter(l => l.name !== locationName);
+        setItem(JSON.stringify(newPersistSavedLocation));
+
+        const newSavedLocation = savedLocation.filter(l => l.current.name !== locationName);
+        setSavedLocation(newSavedLocation);
     }
 
     return (
@@ -28,6 +42,7 @@ const ListOfSavedCities: FC = () => {
                         key={`${name}-${index}`}
                         style={styles.cityItem}
                         onPress={() => onSpecificLocationPress(index)}
+                        onLongPress={() => onSpecificLocationLongPress(index)}
                     >
                         <Text style={styles.cityNameText}>{name}</Text>
                         <Text style={styles.tempText}>{temp} °C</Text>

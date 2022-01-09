@@ -18,7 +18,7 @@ const ClosestDaysPanel: FC<Props> = ({ weather }) => {
                 <Text style={styles.headerText}>Prognoza (7 dni)</Text>
                 <View style={styles.divider} />
                 {
-                    weather.map((item, index) => (
+                    weather?.map((item, index) => (
                         <View style={styles.closestDayItem} key={index}>
                             <Text style={styles.dayText}>{index === 0 ? 'Dziś' : getNameOfTheDay(today + index)}</Text>
                             <View style={styles.detailsContainer}>
