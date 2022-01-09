@@ -3,6 +3,8 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 import RootView from '../views/RootView';
 import CitiesListView from '../views/CitiesListView';
 import LoadingView from '../views/LoadingView';
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 
 export enum ScreensNames {
     Loading = 'LOADING_VIEW',

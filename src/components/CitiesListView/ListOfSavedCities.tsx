@@ -1,19 +1,28 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { FC, useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScreensNames } from '../../nav/RootNavigation';
+import useWeatherStore from '../../network/stores/WeatherStore';
 
 interface Props {
 
 }
 
 const ListOfSavedCities: FC<Props> = ({ }) => {
+    const navigation = useNavigation();
+    const [savedLocation] = useWeatherStore('savedLocation');
 
-    const cities = useMemo(() => {
-        const currentLocation = {
-            name: 'Moja lokalizacja',
-            temp: 4
-        }
-        return [currentLocation, ...testLocation]
-    }, []);
+    const cities = useMemo(() => (
+        savedLocation.map((location, index) => ({
+            name: index === 0 ? 'Moja lokalizacja' : location.current.name,
+            temp: location.current.temp
+        }))
+    ), [savedLocation]);
+
+    const onSpecificLocationPress = (index: number) => {
+        const location = savedLocation[index];
+        navigation.navigate(ScreensNames.Root, { weather: location });
+    }
 
     return (
         <ScrollView style={styles.scrollContainer}>
@@ -22,6 +31,7 @@ const ListOfSavedCities: FC<Props> = ({ }) => {
                     <TouchableOpacity 
                         key={`${name}-${index}`}
                         style={styles.cityItem}
+                        onPress={() => onSpecificLocationPress(index)}
                     >
                         <Text style={styles.cityNameText}>{name}</Text>
                         <Text style={styles.tempText}>{temp} °C</Text>

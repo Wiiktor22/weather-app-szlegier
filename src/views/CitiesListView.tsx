@@ -2,9 +2,16 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import ListOfSavedCities from '../components/CitiesListView/ListOfSavedCities';
 import { Feather } from '@expo/vector-icons';
+import useFetch from '../network/useFetch';
 
 const CitiesListView: FC = () => {
+    const { fetchCoordsByCityName } = useFetch();
     const [searchedCityName, setSearchedCityName] = useState('');
+
+    const handleSearchPress = () => {
+        fetchCoordsByCityName(searchedCityName);
+        setSearchedCityName('')
+    }
 
     return (
         <View style={styles.container}>
@@ -17,7 +24,7 @@ const CitiesListView: FC = () => {
                     placeholder={'Szukaj miasta'}
                     placeholderTextColor={'#b3b3b3'}
                 />
-                <TouchableOpacity style={styles.searchButton} >
+                <TouchableOpacity style={styles.searchButton} onPress={handleSearchPress}>
                     <Feather name="search" size={18} color="white" />
                 </TouchableOpacity>
             </View>

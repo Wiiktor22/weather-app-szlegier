@@ -4,10 +4,11 @@ import TodayWeatherPanel from '../components/RootView/TodayWeatherPanel';
 import ClosestHoursPanel from '../components/RootView/ClosestHoursPanel';
 import ClosestDaysPanel from '../components/RootView/ClosestDaysPanel';
 import WeatherDetailsPanel from '../components/RootView/WeatherDetailsPanel';
-import useWeatherStore from '../network/stores/WeatherStore';
+import { useRoute } from '@react-navigation/native';
 
 const RootView: FC = () => {
-    const [savedLocation] = useWeatherStore('savedLocation');
+    const route = useRoute();
+    const { params } = route;
 
     return (
         <View style={styles.container}>
@@ -16,10 +17,10 @@ const RootView: FC = () => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <TodayWeatherPanel weather={savedLocation?.[0]?.current} />
-                <ClosestHoursPanel weather={savedLocation?.[0]?.hourly} />
-                <ClosestDaysPanel weather={savedLocation?.[0]?.daily} />
-                <WeatherDetailsPanel weather={savedLocation?.[0]?.current} />
+                <TodayWeatherPanel weather={params?.weather?.current} />
+                <ClosestHoursPanel weather={params?.weather?.hourly} />
+                <ClosestDaysPanel weather={params?.weather?.daily} />
+                <WeatherDetailsPanel weather={params?.weather?.current} />
             </ScrollView>
         </View>
     )
