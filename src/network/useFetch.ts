@@ -19,7 +19,7 @@ const useFetch = (): FetchHookObject => {
     const [savedLocation, setSavedLocation] = useWeatherStore('savedLocation');
     const { getItem, setItem } = useAsyncStorage('persistSavedLocations');
 
-    const fetchWeatherByCoords = async (providedLocations: { latitude: number, longitude: number }[]) => {
+    const fetchWeatherByCoords = async (providedLocations: { latitude: number, longitude: number }[]): Promise<WeatherObject[]> => {
         let weather = [];
 
         for (const providedLocation of providedLocations) {
@@ -56,7 +56,8 @@ const useFetch = (): FetchHookObject => {
             }
         }
 
-        setSavedLocation(weather)
+        setSavedLocation(weather);
+        return weather;
     }
 
     const fetchCoordsByCityName = async (city: string) => {
@@ -80,7 +81,7 @@ const useFetch = (): FetchHookObject => {
             alreadySavedPersistLocations = [...alreadySavedPersistLocations, newCity];
             setItem(JSON.stringify(alreadySavedPersistLocations));
 
-            fetchWeatherByCoords(newCity.latitude, newCity.longitude);
+            fetchWeatherByCoords([{ latitude: newCity.latitude, longitude: newCity.longitude }]);
         }
     }
 

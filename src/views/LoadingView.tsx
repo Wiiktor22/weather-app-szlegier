@@ -46,9 +46,9 @@ const LoadingView: FC = () => {
                 ...(persistSavedLocations !== null ? persistSavedLocations : [])
             ];
             
-            await fetchWeatherByCoords(persistSavedLocations);
+            const weather = await fetchWeatherByCoords(persistSavedLocations);
 
-            navigation.navigate(ScreensNames.Root, { weather: savedLocation[0] });
+            navigation.navigate(ScreensNames.Root, { weather: weather[0] });
         }
 
         fetchWeatherForAllLocations();

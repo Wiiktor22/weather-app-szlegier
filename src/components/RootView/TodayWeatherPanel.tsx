@@ -24,9 +24,11 @@ const TodayWeatherPanel: FC<Props> = ({ weather }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+                <TouchableOpacity>
+                    <Ionicons name="refresh" size={24} color="white" />
+                </TouchableOpacity>
                 <Text style={styles.regularText}>Pogoda</Text>
                 <TouchableOpacity 
-                    style={styles.menuButton}
                     onPress={() => navigation.navigate({ name: ScreensNames.CitiesList })}
                 >
                     <Ionicons name="menu-outline" size={30} color="white" />
@@ -62,15 +64,12 @@ const styles = StyleSheet.create({
         height: 320,
     },
     header: {
-        position: 'relative',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
         height: 30,
         width: '100%',
-    },
-    menuButton: {
-        position: 'absolute',
-        right: 10
+        paddingHorizontal: 15
     },
     regularText: {
         fontSize: 16,
