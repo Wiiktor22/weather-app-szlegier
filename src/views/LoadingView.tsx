@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { FC, useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { ScreensNames } from '../nav/RootNavigation';
 import useFetch from '../network/useFetch';
@@ -31,8 +31,8 @@ const LoadingView: FC = () => {
         })();
     }, []);
 
-    useEffect(() => {
-        if (location === null) return;
+    const fetchWeather = useCallback(() => {
+        if (location === null && !savedLocation) return;
 
         setScreenMessage('Wczytywanie pogody...')
 
@@ -52,9 +52,11 @@ const LoadingView: FC = () => {
         }
 
         fetchWeatherForAllLocations();
-    }, [location]);
+    }, [location])
 
-    
+    useFocusEffect(() => {
+        fetchWeather()
+    })
 
     return (
         <View style={styles.container}>

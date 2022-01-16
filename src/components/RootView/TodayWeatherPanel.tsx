@@ -24,7 +24,9 @@ const TodayWeatherPanel: FC<Props> = ({ weather }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate({ name: ScreensNames.Loading })}
+                >
                     <Ionicons name="refresh" size={24} color="white" />
                 </TouchableOpacity>
                 <Text style={styles.regularText}>Pogoda</Text>
