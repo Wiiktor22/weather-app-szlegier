@@ -8,8 +8,8 @@ import { Alert } from "react-native";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 interface FetchHookObject {
-    fetchWeatherByCoords: (providedLocations: { latitude: number, longitude: number }[]) => Promise<void>;
-    fetchCoordsByCityName: (city: string) => Promise<void>;
+    fetchWeatherByCoords: (providedLocations: { latitude: number, longitude: number }[]) => Promise<WeatherObject[]>;
+    fetchCoordsByCityName: (city: string) => Promise<WeatherObject>;
 }
 
 const useFetch = (): FetchHookObject => {
@@ -60,7 +60,7 @@ const useFetch = (): FetchHookObject => {
         return weather;
     }
 
-    const fetchCoordsByCityName = async (city: string) => {
+    const fetchCoordsByCityName = async (city: string): Promise<WeatherObject> => {
         const url = getCoordsByCityName(city);
         const { data } = await axios.get(url);
 
@@ -81,7 +81,9 @@ const useFetch = (): FetchHookObject => {
             alreadySavedPersistLocations = [...alreadySavedPersistLocations, newCity];
             setItem(JSON.stringify(alreadySavedPersistLocations));
 
-            fetchWeatherByCoords([{ latitude: newCity.latitude, longitude: newCity.longitude }]);
+            const weather = await fetchWeatherByCoords([{ latitude: newCity.latitude, longitude: newCity.longitude }]);
+            setSavedLocation([...savedLocation, weather[0]])
+            return weather[0];
         }
     }
 

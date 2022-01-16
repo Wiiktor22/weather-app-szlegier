@@ -8,9 +8,9 @@ const CitiesListView: FC = () => {
     const { fetchCoordsByCityName } = useFetch();
     const [searchedCityName, setSearchedCityName] = useState('');
 
-    const handleSearchPress = () => {
-        fetchCoordsByCityName(searchedCityName);
-        setSearchedCityName('')
+    const handleSearchPress = async () => {
+        await fetchCoordsByCityName(searchedCityName);
+        setSearchedCityName('');
     }
 
     return (

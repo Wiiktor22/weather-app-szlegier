@@ -22,12 +22,10 @@ const ListOfSavedCities: FC = () => {
 
     const onSpecificLocationLongPress = async (index: number) => {
         const locationName = savedLocation[index].current.name;
-
-        // TODO: NAPRAWIĆ KASOWANIE
         
         const savedLocations = await getItem() as string;
         const parsedLocation = JSON.parse(savedLocations);
-        const newPersistSavedLocation = parsedLocation.filter(l => l.name !== locationName);
+        const newPersistSavedLocation = parsedLocation.filter(l => l.name !== locationName && !locationName.includes(l.name));
         setItem(JSON.stringify(newPersistSavedLocation));
 
         const newSavedLocation = savedLocation.filter(l => l.current.name !== locationName);
